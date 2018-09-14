@@ -13,6 +13,17 @@ app.use(express.static(publicFolderPath));
 
 io.on('connection', (socket) => {
   console.log('Client connected');
+
+  socket.emit('newMessage', {
+    from: 'mike',
+    text: 'New create message',
+    createdAt: 123123
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log('createMessage', message);
+  });
+
   socket.on('disconnect', () => {
     console.log('Disconnected from client');
   });
