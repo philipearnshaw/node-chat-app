@@ -14,10 +14,23 @@ app.use(express.static(publicFolderPath));
 io.on('connection', (socket) => {
   console.log('Client connected');
 
+  // Emit to every single connection
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat app',
+    createdAt: new Date().getTime()
+  });
+
+  // Emit to every single connection besides this socket
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user has just joined',
+    createdAt: new Date().getTime()
+  });
+
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
 
-    // Emit to every single connection
     io.emit('newMessage', {
       from: message.from,
       text: message.text,
