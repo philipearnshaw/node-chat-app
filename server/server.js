@@ -22,8 +22,10 @@ io.on('connection', (socket) => {
   // Emit to every single connection besides this socket
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user has just joined'));
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
+
+    callback('This is from the server');
 
     io.emit('newMessage', generateMessage(message.from, message.text));
   });
